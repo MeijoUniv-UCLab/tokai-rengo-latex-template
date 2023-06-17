@@ -1,0 +1,169 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% tokai-rengo.sty
+% 電気・電子・情報関係学会東海支部連合大会原稿 スタイルファイル（2023年版）
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\usepackage{newtxtext,newtxmath}		% Time系フォントの利用
+\usepackage[dvipdfmx]{graphicx}			% 図の取り込み
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% レイアウト設定
+% * 左右=18mm，上=30mm，下=27mm
+% * 2段組の左右カラムの間隔=7mm
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{geometry}
+\geometry{left=18truemm, right=18truemm, top=30truemm, bottom=27truemm,
+	columnsep=7truemm}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% ページ番号を出力しない
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\pagestyle{empty}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% タイトルのフォーマット
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\etitle}[1]{\def\@etitle{#1}}	% 英文題目
+\newcommand{\eauthor}[1]{\def\@eauthor{#1}}	% 英文著者
+\def\@maketitle{\newpage
+    \begin{center}%
+		{\fontsize{14truept}{22truept}\selectfont \@title \par}	% 和文題目（フォントサイズ=14pt，行送り=22pt）
+		\vskip 12truept											% 和文題目と著者の間隔（=12pt）
+		{\fontsize{12truept}{18truept}\selectfont				% 和文著者（文字サイズ=12pt，行送り=18pt）
+		\begin{tabular}[t]{c}%
+			\@author											% 和文著者
+        \end{tabular}\par}%-
+		\vskip 9truept	
+		{\fontsize{9truept}{14truept}\selectfont \@etitle \par \@eauthor}	% 英文題目（文字サイズ=9pt，行送り=14pt）
+	\end{center}%
+	\par\vskip 9truept											% タイトルと本文の間隔
+}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% 章節見出しの間隔調整
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%全角数字
+\def\@arabicz#1{%
+  \ifcase#1 ０\or １\or ２\or ３\or ４\or ５\or ６\or ７\or ８\or ９\or １０\or
+  １１\or １２\or １３\or １４\or １５\or １６\or １７\or １８\or １９\or ２０\or 
+  ２１\or ２２\or ２３\or ２４\or ２５\or ２６\else\@ctrerr\fi}
+\def\arabicz#1{\expandafter\@arabicz\csname c@#1\endcsname}
+
+% 章見出しの設定
+\renewcommand{\thesection}{\arabicz{section}．\hspace{-1zw}} % 「全角の章番号．」のフォーマット
+\renewcommand{\section}{\@startsection{section}{1}{\z@}%
+	{0.0\Cvs \@plus.00\Cdp \@minus.00\Cdp}%
+	{0.0\Cvs \@plus.00\Cdp}%
+	{\fontsize{10truept}{20truept}\selectfont\bfseries}}
+
+%% 節見出しの設定
+\renewcommand{\thesubsection}{\textless\arabic{section}・\arabic{subsection}\textgreater \hspace{-1zw}}  % 「<章番号・節番号>」のフォーマット
+\renewcommand{\subsection}{\@startsection{subsection}{2}{\z@}%
+	{0.0\Cvs \@plus.00\Cdp \@minus.00\Cdp}%
+	{-1zw} % 見出しの後ろに全角1文字のスペースを設ける（標準は余白が大きいため，マイナスの値を設定して左に寄せる）
+	{\reset@font\normalsize\bfseries}}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% 箇条書きの上下間隔の設定
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%% 番号なし箇条書き
+\renewenvironment{itemize}{
+	\begin{list}{\textbullet}{%
+		\topsep\z@
+		\parskip\z@
+		\partopsep\z@
+		\leftmargin1.5zw
+		\labelwidth0zw
+		\labelsep0.5zw
+		\itemindent0zw
+		\listparindent1zw
+	}
+}{
+	\end{list}
+}
+
+%% 番号付き箇条書き
+\renewcommand{\labelenumi}{(\theenumi)} %enumerateのitemを(1)とする
+\renewenvironment{enumerate}[1][\z@]
+{\ifnum \@enumdepth >3\relax\@toodeep\else
+	\advance\@enumdepth\@ne
+	\edef\@enumctr{enum\romannumeral\the\@enumdepth}%
+	\list{\csname label\@enumctr\endcsname}{%
+		\topsep\z@
+		\parskip\z@
+		\itemsep\z@
+		\parsep\z@
+		\leftmargin#1 \advance\leftmargin 2.0zw
+		\labelwidth0zw
+		\labelsep0.5zw
+		\itemindent0zw
+		\listparindent1zw
+		\usecounter{\@enumctr}%
+		\def\makelabel##1{\hss\llap{##1}}
+	}%
+	\fi
+}{
+	\endlist
+}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% 図表の上下間隔の設定
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\setlength{\floatsep}{1zh}			% ページの上下に出力される図と図の間のスペース
+\setlength{\textfloatsep}{1zh}		% ページの上下に出力される図と本文の間のスペース
+\setlength{\intextsep}{1zh}			% ページの途中に出力される図と本文の間のスペース
+\setlength{\abovecaptionskip}{2pt}	% 図表とキャプションの間のスペース
+\setlength{\belowcaptionskip}{2pt}	% 図表のキャプション下部のスペース
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% 図表のキャプションを英語に変更
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\renewcommand{\figurename}{Fig.~}
+\renewcommand{\tablename}{Table~}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% 参考文献のフォーマット
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\renewcommand{\refname}{文\quad 献}	%参考文献の見出しを「文•献」に変更
+%\renewcommand{\@biblabel}[1]{(#1)}	%文献番号を[1]から(1)に変更
+
+\renewenvironment{thebibliography}[1]{%
+	\global\let\presectionname\relax
+	\global\let\postsectionname\relax
+	\fontsize{8pt}{12pt}\selectfont	% 「参考文献」の文字サイズを8pt（行送り12pt）に設定
+	\section*{\fontsize{8pt}{12pt}\selectfont\centering\refname\@mkboth{\refname}{\refname}}
+	\vskip 4pt
+	\hrule width \linewidth	%罫線をひく（上下に4ptの間隔を設定）
+	\vskip 4pt
+	\list{\@biblabel{\@arabic\c@enumiv}}%
+		{\settowidth\labelwidth{\@biblabel{#1}}%
+		\leftmargin\labelwidth
+		\advance\leftmargin\labelsep
+		\@openbib@code
+		\usecounter{enumiv}%
+		\let\p@enumiv\@empty
+		\renewcommand\theenumiv{\@arabic\c@enumiv}}%
+	\sloppy
+	\clubpenalty4000
+	\@clubpenalty\clubpenalty
+	\widowpenalty4000%
+	\sfcode`\.\@m
+}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% マクロ
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\DAG}{$^{\dag}$}				% 所属を示すダガー記号
+\newcommand{\DDAG}{$^{\ddag}$}				% 所属を示すダブルダガー記号
+\newcommand{\PRESENTER}{$^{\ast}$}			% 講演者を示すアスタリスク
+\newcommand{\figref}[1]{\figurename\ref{#1}}	% 図を参照するコマンド
+\newcommand{\tabref}[1]{\tablename\ref{#1}}	% 表を参照するコマンド
