@@ -3,7 +3,7 @@
 毎年8月下旬から9月上旬に東海地区で開催されている「[電気・電子・情報関係学会 東海支部連合大会](https://www.tokai-rengo.jp/)」の原稿テンプレートがWord形式しか公開されていないため，LaTeXテンプレートを作成しました（非公式）．
 
 ## 想定環境
-- Overleafで使用することを想定していますが，TeX Liveでも利用できると思います（未確認）．
+- オンラインLaTeXエディタ[Overleaf](https://ja.overleaf.com/)で使用することを想定していますが，[TeX Live](https://texwiki.texjp.org/?TeX%20Live)でも利用できると思います（未確認）．
 - upLaTeXおよびdvipdfmxを利用してPDFを生成することを想定しています．pLaTeXなど異なるコマンドを使う場合は，`latexmkrc`ファイルを適宜編集してください．
 
 ## 原稿レイアウトの設定
